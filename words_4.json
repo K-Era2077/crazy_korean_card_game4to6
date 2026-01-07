@@ -1,0 +1,422 @@
+[
+  {
+    "korean": "계획성이 없다",
+    "vietnamese": "không có tính kế hoạch",
+    "unit": 4
+  },
+  {
+    "korean": "눈치가 없다",
+    "vietnamese": "không tinh tế",
+    "unit": 4
+  },
+  {
+    "korean": "고집이 세다",
+    "vietnamese": "cứng đầu",
+    "unit": 4
+  },
+  {
+    "korean": "자존심이 강하다",
+    "vietnamese": "lòng tự trọng cao",
+    "unit": 4
+  },
+  {
+    "korean": "불만이다",
+    "vietnamese": "bất mãn",
+    "unit": 4
+  },
+  {
+    "korean": "속상하다",
+    "vietnamese": "buồn, đau lòng",
+    "unit": 4
+  },
+  {
+    "korean": "발끈하다",
+    "vietnamese": "nổi khùng, nổi xung lên",
+    "unit": 4
+  },
+  {
+    "korean": "따지다",
+    "vietnamese": "gạn hỏi, tra hỏi",
+    "unit": 4
+  },
+  {
+    "korean": "지적하다",
+    "vietnamese": "chỉ trích",
+    "unit": 4
+  },
+  {
+    "korean": "여성스럽다",
+    "vietnamese": "nữ tính",
+    "unit": 4
+  },
+  {
+    "korean": "사랑스럽다",
+    "vietnamese": "đáng yêu",
+    "unit": 4
+  },
+  {
+    "korean": "자랑스럽다",
+    "vietnamese": "đáng tự hào",
+    "unit": 4
+  },
+  {
+    "korean": "당황스럽다",
+    "vietnamese": "bối rối, hoang mang",
+    "unit": 4
+  },
+  {
+    "korean": "걱정스럽다",
+    "vietnamese": "lo lắng",
+    "unit": 4
+  },
+  {
+    "korean": "기능",
+    "vietnamese": "chức năng",
+    "unit": 4
+  },
+  {
+    "korean": "사용법",
+    "vietnamese": "cách dùng",
+    "unit": 4
+  },
+  {
+    "korean": "광고",
+    "vietnamese": "quảng cáo",
+    "unit": 4
+  },
+  {
+    "korean": "전문적이다",
+    "vietnamese": "mang tính chuyên môn",
+    "unit": 4
+  },
+  {
+    "korean": "최신식이다",
+    "vietnamese": "kiểu mới nhất",
+    "unit": 4
+  },
+  {
+    "korean": "사우나",
+    "vietnamese": "tắm hơi, sauna",
+    "unit": 4
+  },
+  {
+    "korean": "주년",
+    "vietnamese": "năm thứ",
+    "unit": 4
+  },
+  {
+    "korean": "기념",
+    "vietnamese": "kỉ niệm",
+    "unit": 4
+  },
+  {
+    "korean": "이벤트",
+    "vietnamese": "sự kiện",
+    "unit": 4
+  },
+  {
+    "korean": "회원",
+    "vietnamese": "hội viên",
+    "unit": 4
+  },
+  {
+    "korean": "최상",
+    "vietnamese": "trên hết, tối thượng",
+    "unit": 4
+  },
+  {
+    "korean": "저축",
+    "vietnamese": "sự tiết kiệm",
+    "unit": 4
+  },
+  {
+    "korean": "말다툼하다",
+    "vietnamese": "cãi cọ, tranh cãi",
+    "unit": 4
+  },
+  {
+    "korean": "취향",
+    "vietnamese": "khuynh hướng, sở thích",
+    "unit": 4
+  },
+  {
+    "korean": "록 콘서트",
+    "vietnamese": "buổi biểu diễn nhạc Rock",
+    "unit": 4
+  },
+  {
+    "korean": "드라이브를 가다",
+    "vietnamese": "lái xe đi dạo",
+    "unit": 4
+  },
+  {
+    "korean": "최근",
+    "vietnamese": "gần đây",
+    "unit": 4
+  },
+  {
+    "korean": "포기하다",
+    "vietnamese": "từ bỏ",
+    "unit": 4
+  },
+  {
+    "korean": "늘",
+    "vietnamese": "luôn luôn",
+    "unit": 4
+  },
+  {
+    "korean": "거울",
+    "vietnamese": "gương",
+    "unit": 4
+  },
+  {
+    "korean": "실제",
+    "vietnamese": "thực tế",
+    "unit": 4
+  },
+  {
+    "korean": "남자답다",
+    "vietnamese": "đàn ông, nam tính",
+    "unit": 4
+  },
+  {
+    "korean": "몸매",
+    "vietnamese": "cơ thể",
+    "unit": 4
+  },
+  {
+    "korean": "옷장",
+    "vietnamese": "tủ quần áo",
+    "unit": 4
+  },
+  {
+    "korean": "심각하다",
+    "vietnamese": "nghiêm trọng",
+    "unit": 4
+  },
+  {
+    "korean": "상사",
+    "vietnamese": "ông chủ, cấp trên",
+    "unit": 4
+  },
+  {
+    "korean": "원만하다",
+    "vietnamese": "thuận lợi, tốt đẹp",
+    "unit": 4
+  },
+  {
+    "korean": "기대하다",
+    "vietnamese": "kì vọng",
+    "unit": 4
+  },
+  {
+    "korean": "고르다",
+    "vietnamese": "chọn",
+    "unit": 4
+  },
+  {
+    "korean": "수준",
+    "vietnamese": "tiêu chuẩn",
+    "unit": 4
+  },
+  {
+    "korean": "정식",
+    "vietnamese": "thực đơn cố định",
+    "unit": 4
+  },
+  {
+    "korean": "모처럼",
+    "vietnamese": "lâu lắm rồi, sau một thời gian",
+    "unit": 4
+  },
+  {
+    "korean": "기분이 나다",
+    "vietnamese": "có tâm trạng",
+    "unit": 4
+  },
+  {
+    "korean": "메뉴판",
+    "vietnamese": "thực đơn",
+    "unit": 4
+  },
+  {
+    "korean": "판매점",
+    "vietnamese": "cửa hàng",
+    "unit": 4
+  },
+  {
+    "korean": "의논하다",
+    "vietnamese": "thảo luận, bàn bạc",
+    "unit": 4
+  },
+  {
+    "korean": "현금",
+    "vietnamese": "tiền mặt",
+    "unit": 4
+  },
+  {
+    "korean": "다림질",
+    "vietnamese": "việc là ủi",
+    "unit": 4
+  },
+  {
+    "korean": "커피를 내리다",
+    "vietnamese": "pha cà phê",
+    "unit": 4
+  },
+  {
+    "korean": "식빵",
+    "vietnamese": "bánh mì (lát)",
+    "unit": 4
+  },
+  {
+    "korean": "달래다",
+    "vietnamese": "dỗ dành, xoa dịu",
+    "unit": 4
+  },
+  {
+    "korean": "기저귀를 갈다",
+    "vietnamese": "thay bỉm",
+    "unit": 4
+  },
+  {
+    "korean": "실험",
+    "vietnamese": "sự thí nghiệm",
+    "unit": 4
+  },
+  {
+    "korean": "평균",
+    "vietnamese": "trung bình",
+    "unit": 4
+  },
+  {
+    "korean": "동시에",
+    "vietnamese": "đồng thời",
+    "unit": 4
+  },
+  {
+    "korean": "허둥대다",
+    "vietnamese": "luống cuống, cuống cuồng",
+    "unit": 4
+  },
+  {
+    "korean": "침착하다",
+    "vietnamese": "bình tĩnh",
+    "unit": 4
+  },
+  {
+    "korean": "우왕좌왕하다",
+    "vietnamese": "lòng vòng",
+    "unit": 4
+  },
+  {
+    "korean": "주어지다",
+    "vietnamese": "được cho sẵn",
+    "unit": 4
+  },
+  {
+    "korean": "순서",
+    "vietnamese": "thứ tự",
+    "unit": 4
+  },
+  {
+    "korean": "뛰어나다",
+    "vietnamese": "nổi trội, nổi bật",
+    "unit": 4
+  },
+  {
+    "korean": "뒤떨어지다",
+    "vietnamese": "rớt lại, tụt hậu",
+    "unit": 4
+  },
+  {
+    "korean": "시키다",
+    "vietnamese": "bắt, sai (làm gì)",
+    "unit": 4
+  },
+  {
+    "korean": "한꺼번에",
+    "vietnamese": "một lần, một lúc",
+    "unit": 4
+  },
+  {
+    "korean": "주차하다",
+    "vietnamese": "đỗ xe",
+    "unit": 4
+  },
+  {
+    "korean": "감정이 풍부하다",
+    "vietnamese": "giàu tình cảm",
+    "unit": 4
+  },
+  {
+    "korean": "근거",
+    "vietnamese": "căn cứ, cơ sở",
+    "unit": 4
+  },
+  {
+    "korean": "토론을 하다",
+    "vietnamese": "thảo luận",
+    "unit": 4
+  },
+  {
+    "korean": "의상 디자이너",
+    "vietnamese": "nhà thiết kế trang phục",
+    "unit": 4
+  },
+  {
+    "korean": "의상실",
+    "vietnamese": "cửa hàng thời trang",
+    "unit": 4
+  },
+  {
+    "korean": "최초",
+    "vietnamese": "sớm nhất, đầu tiên",
+    "unit": 4
+  },
+  {
+    "korean": "조종사",
+    "vietnamese": "phi công",
+    "unit": 4
+  },
+  {
+    "korean": "부기장",
+    "vietnamese": "cơ phó",
+    "unit": 4
+  },
+  {
+    "korean": "임명되다",
+    "vietnamese": "được bổ nhiệm",
+    "unit": 4
+  },
+  {
+    "korean": "기장",
+    "vietnamese": "cơ trưởng",
+    "unit": 4
+  },
+  {
+    "korean": "면허",
+    "vietnamese": "giấy phép",
+    "unit": 4
+  },
+  {
+    "korean": "발급되다",
+    "vietnamese": "được cấp",
+    "unit": 4
+  },
+  {
+    "korean": "차지하다",
+    "vietnamese": "chiếm, giữ",
+    "unit": 4
+  },
+  {
+    "korean": "지휘자",
+    "vietnamese": "người chỉ huy",
+    "unit": 4
+  },
+  {
+    "korean": "상임",
+    "vietnamese": "thường trực",
+    "unit": 4
+  }
+]

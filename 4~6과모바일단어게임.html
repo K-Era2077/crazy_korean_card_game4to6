@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울대 한국어 4A 통합 단어 게임</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary: #10b981;
+            --bg: #f8fafc;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .game-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        @media (min-width: 600px) {
+            .game-container { border-radius: 24px; margin: 20px 0; min-height: auto; }
+        }
+        
+        h1 { font-size: 1.4rem; text-align: center; margin: 10px 0 5px; color: #1e293b; }
+        .subtitle { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 20px; }
+        
+        /* Control Panels */
+        .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .btn-group { 
+            display: flex; 
+            justify-content: center; 
+            gap: 8px; 
+            background: #f1f5f9; 
+            padding: 6px; 
+            border-radius: 14px;
+            flex-wrap: wrap;
+        }
+        .btn-group label {
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            padding: 10px 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+        }
+        .btn-group input { display: none; }
+        .btn-group input:checked + span {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: block;
+            border-radius: 10px;
+            padding: 10px 4px;
+        }
+        .btn-group span { display: block; width: 100%; height: 100%; }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-item { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            padding: 12px 5px; 
+            border-radius: 16px; 
+            text-align: center;
+        }
+        .stat-label { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 4px; font-weight: 600; }
+        .stat-value { font-size: 1.2rem; font-weight: 800; color: #1e293b; }
+        .stat-value.score { color: var(--secondary); }
+
+        /* Card */
+        .card {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 24px;
+            padding: 45px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .q-lang { font-size: 0.8rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; margin-bottom: 8px; }
+        .q-text { font-size: 1.8rem; font-weight: 800; color: #1e3a8a; word-break: keep-all; }
+
+        /* Options */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 80px;
+            display: flex; align-items: center; justify-content: center;
+            line-height: 1.3;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #f5f3ff; transform: translateY(-2px); }
+        .option-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+        .option-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #7f1d1d !important; opacity: 0.7; }
+
+        /* Action */
+        #next-btn {
+            background: var(--primary); color: white; border: none; padding: 18px;
+            border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 4px 0 var(--primary-dark); transition: all 0.1s;
+        }
+        #next-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; transform: translateY(4px); }
+        #next-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
+
+        #msg { text-align: center; height: 30px; margin: 10px 0; font-weight: 700; font-size: 1rem; }
+
+        /* Loading */
+        #loading-overlay {
+            position: fixed; inset: 0; background: white; z-index: 200;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div style="font-size: 1.2rem; font-weight: bold;">데이터를 불러오는 중...</div>
+    </div>
+
+    <div class="game-container">
+        <h1>서울대 한국어 4A 통합</h1>
+        <div class="subtitle">4과 · 5과 · 6과 어휘 학습</div>
+
+        <div class="controls">
+            <div class="btn-group">
+                <label><input type="radio" name="direction" value="vi2ko" checked><span>🇻🇳 ➔ 🇰🇷</span></label>
+                <label><input type="radio" name="direction" value="ko2vi"><span>🇰🇷 ➔ 🇻🇳</span></label>
+            </div>
+            <div class="btn-group">
+                <label><input type="radio" name="unit" value="all" checked><span>전체</span></label>
+                <label><input type="radio" name="unit" value="4"><span>4과</span></label>
+                <label><input type="radio" name="unit" value="5"><span>5과</span></label>
+                <label><input type="radio" name="unit" value="6"><span>6과</span></label>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item"><span class="stat-label">진행</span><span class="stat-value" id="q-num">1</span></div>
+            <div class="stat-item"><span class="stat-label">남은 단어</span><span class="stat-value" id="q-left">0</span></div>
+            <div class="stat-item"><span class="stat-label">점수</span><span class="stat-value score" id="score">0</span></div>
+        </div>
+
+        <div class="card">
+            <div class="q-lang" id="q-lang">-</div>
+            <div class="q-text" id="q-text">준비 중...</div>
+        </div>
+
+        <div class="options-grid" id="options"></div>
+        <div id="msg"></div>
+        <button id="next-btn" disabled>다음 문제</button>
+    </div>
+
+    <script>
+        // 어휘 데이터를 저장할 통합 저장소
+        let MASTER_DATA = { "4": [], "5": [], "6": [] };
+        
+        let allWords = [];
+        let deck = [];
+        let score = 0;
+        let streak = 0;
+        let qCount = 1;
+        let direction = "vi2ko";
+        let unitFilter = "all";
+        let lastWordIdx = -1;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type, dur, vol = 0.1) {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            g.gain.setValueAtTime(vol, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + dur);
+        }
+
+        // 외부 JSON 파일들을 비동기적으로 로드
+        async function loadAllData() {
+            try {
+                const [res4, res5, res6] = await Promise.all([
+                    fetch('words_4.json').then(r => r.json()),
+                    fetch('5과.json').then(r => r.json()),
+                    fetch('6과.json').then(r => r.json())
+                ]);
+
+                // 4과 데이터 매핑 (객체 배열 형식)
+                MASTER_DATA["4"] = res4.map(item => [item.korean, item.vietnamese, "4"]);
+                
+                // 5과 데이터 매핑 (단순 2차원 배열 형식 [Ko, Vi])
+                MASTER_DATA["5"] = res5.map(item => [item[0], item[1], "5"]);
+                
+                // 6과 데이터 매핑 (2차원 배열 형식 [Vi, Ko] 또는 [Ko, Vi] 확인 필요)
+                // 제공된 스니펫을 보면 6과는 [Vietnamese, Korean] 순서일 가능성이 큼
+                // 5과와 형식을 맞추기 위해 처리 (Ko, Vi 순으로 통일)
+                MASTER_DATA["6"] = res6.map(item => {
+                    // 보통 한국어가 포함된 쪽이 정답이므로 한글 여부로 판단하거나 
+                    // 파일 구조에 맞춰 순서를 조정해야 함. 여기서는 [Ko, Vi]로 가정.
+                    // 만약 6과 파일이 [Vi, Ko]라면 [item[1], item[0]]으로 수정 필요.
+                    const containsKorean = (str) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(str);
+                    if (containsKorean(item[1])) return [item[1], item[0], "6"];
+                    return [item[0], item[1], "6"];
+                });
+
+                document.getElementById('loading-overlay').style.display = 'none';
+                initGame();
+            } catch (err) {
+                console.error("데이터 로드 실패:", err);
+                document.getElementById('loading-overlay').innerHTML = 
+                    `<div style="color:red; padding:20px; text-align:center;">
+                        JSON 파일을 찾을 수 없습니다.<br>
+                        (words_4.json, 5과.json, 6과.json 파일이 필요합니다)
+                    </div>`;
+            }
+        }
+
+        function initGame() {
+            allWords = [];
+            if (unitFilter === "all") {
+                allWords = [...MASTER_DATA["4"], ...MASTER_DATA["5"], ...MASTER_DATA["6"]];
+            } else {
+                allWords = [...MASTER_DATA[unitFilter]];
+            }
+            rebuildDeck();
+            nextQuestion();
+        }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function rebuildDeck() {
+            deck = Array.from({ length: allWords.length }, (_, i) => i);
+            shuffle(deck);
+        }
+
+        function getNextIdx() {
+            if (deck.length === 0) rebuildDeck();
+            if (deck.length > 1 && deck[deck.length - 1] === lastWordIdx) {
+                [deck[deck.length - 1], deck[deck.length - 2]] = [deck[deck.length - 2], deck[deck.length - 1]];
+            }
+            const idx = deck.pop();
+            lastWordIdx = idx;
+            return idx;
+        }
+
+        function nextQuestion() {
+            document.getElementById("next-btn").disabled = true;
+            document.getElementById("msg").textContent = "";
+            
+            if (allWords.length === 0) return;
+
+            const idx = getNextIdx();
+            const word = allWords[idx]; 
+            
+            const question = direction === "vi2ko" ? word[1] : word[0];
+            const answer = direction === "vi2ko" ? word[0] : word[1];
+            
+            document.getElementById("q-lang").textContent = direction === "vi2ko" ? `Tiếng Việt (Unit ${word[2]})` : `한국어 (${word[2]}과 어휘)`;
+            document.getElementById("q-text").textContent = question;
+            document.getElementById("q-left").textContent = deck.length;
+            document.getElementById("q-num").textContent = qCount;
+
+            const others = allWords.filter((_, i) => i !== idx).map(w => direction === "vi2ko" ? w[0] : w[1]);
+            // 중복 제거 및 섞기
+            const uniqueOthers = [...new Set(others)];
+            shuffle(uniqueOthers);
+            const choices = shuffle([answer, uniqueOthers[0], uniqueOthers[1], uniqueOthers[2]]);
+
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            choices.forEach(c => {
+                const b = document.createElement("button");
+                b.className = "option-btn";
+                b.textContent = c;
+                b.onclick = () => check(c, answer, b);
+                optionsDiv.appendChild(b);
+            });
+        }
+
+        function check(selected, correct, btn) {
+            const btns = document.querySelectorAll(".option-btn");
+            btns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btn.classList.add("correct");
+                let gained = streak >= 2 ? 3 : (streak === 1 ? 2 : 1);
+                score += gained;
+                streak++;
+                playTone(streak >= 2 ? 880 : 660, 'sine', 0.4);
+                document.getElementById("msg").innerHTML = `<span style="color:#16a34a">${streak > 1 ? streak+'콤보! ' : ''}+${gained}점!</span>`;
+            } else {
+                btn.classList.add("wrong");
+                streak = 0;
+                playTone(200, 'sawtooth', 0.3);
+                document.getElementById("msg").innerHTML = `<span style="color:#dc2626">정답: ${correct}</span>`;
+            }
+
+            document.getElementById("score").textContent = score;
+            document.getElementById("next-btn").disabled = false;
+        }
+
+        document.getElementById("next-btn").onclick = () => {
+            qCount++;
+            nextQuestion();
+        };
+
+        document.querySelectorAll('input[name="direction"]').forEach(i => {
+            i.onchange = (e) => { direction = e.target.value; reset(); };
+        });
+        document.querySelectorAll('input[name="unit"]').forEach(i => {
+            i.onchange = (e) => { unitFilter = e.target.value; reset(); };
+        });
+
+        function reset() {
+            score = 0; streak = 0; qCount = 1; lastWordIdx = -1;
+            document.getElementById("score").textContent = "0";
+            initGame();
+        }
+
+        // 페이지 로드 시 데이터 로드 시작
+        window.onload = loadAllData;
+    </script>
+</body>
+</html>
