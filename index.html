@@ -133,92 +133,39 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        #next-btn {
-            width: 100%; padding: 18px; font-size: 1.2rem;
-            background: #10b981; color: white; border: none; border-radius: 16px;
-            cursor: pointer; font-weight: 800;
-            transition: all 0.2s;
-            box-shadow: 0 4px 0 #059669;
-            margin-top: 10px;
-        }
-        #next-btn:disabled { 
-            background: #d1d5db; 
-            color: #9ca3af;
-            cursor: not-allowed; 
-            box-shadow: none; 
-            transform: translateY(2px);
-        }
-        #next-btn:hover:not(:disabled) { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 0 #047857; }
-        #next-btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 0 0; }
-
-        /* Message Area */
-        #message {
-            text-align: center; 
-            min-height: 30px; 
-            font-weight: 700; 
-            margin: 10px 0;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Celebration Overlay */
-        .overlay { 
-            position: fixed; inset: 0; 
-            background: rgba(0,0,0,0.7); 
-            backdrop-filter: blur(5px);
-            display: none; 
-            align-items: center; justify-content: center; 
-            z-index: 100; 
+        /* Milestone Modal */
+        .milestone-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300;
+            display: none; align-items: center; justify-content: center;
             padding: 20px;
         }
-        .overlay.show { display: flex; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .celebrate-card { 
-            background: white; 
-            padding: 40px 30px; 
-            border-radius: 30px; 
-            text-align: center; 
-            max-width: 400px; 
-            width: 100%;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transform: scale(0.9);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        .milestone-modal {
+            background: white; padding: 30px; border-radius: 24px; text-align: center;
+            max-width: 400px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes popIn { to { transform: scale(1); } }
-
-        .confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
-        .confetti span {
-            position: absolute; width: 10px; height: 10px; 
-            animation: fall 3s linear infinite;
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .milestone-title { font-size: 2rem; margin-bottom: 10px; }
+        .milestone-text { font-size: 1.1rem; color: #475569; margin-bottom: 20px; line-height: 1.5; }
+        .milestone-btn {
+            background: var(--secondary); color: white; border: none; padding: 12px 30px;
+            border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem;
         }
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
-
-        .celebrate-btn {
-            margin-top: 25px;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: 800;
-            background: #4f46e5;
-            color: white;
-            width: 100%;
-            box-shadow: 0 4px 0 #3730a3;
-            transition: transform 0.1s;
-        }
-        .celebrate-btn:active { transform: translateY(4px); box-shadow: none; }
     </style>
 </head>
 <body>
     <div id="loading-overlay">
         <div style="font-size: 1.2rem; font-weight: bold;">데이터를 불러오는 중...</div>
+    </div>
+
+    <!-- 마일스톤 알림 창 -->
+    <div class="milestone-overlay" id="milestone-overlay">
+        <div class="milestone-modal">
+            <div class="milestone-title" id="m-emoji">🏆</div>
+            <h2 id="m-title">마일스톤 달성!</h2>
+            <p class="milestone-text" id="m-text">정말 대단해요!</p>
+            <button class="milestone-btn" onclick="closeMilestone()">계속하기</button>
+        </div>
     </div>
 
     <div class="game-container">
@@ -254,20 +201,8 @@
         <button id="next-btn" disabled>다음 문제</button>
     </div>
 
-    <div class="overlay" id="overlay">
-        <div class="confetti" id="confetti-container"></div>
-        <div class="celebrate-card">
-            <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
-            <h2 style="font-size: 2rem; margin: 0 0 10px; color: #10b981;" id="cel-title">축하합니다!</h2>
-            <p style="font-size: 1.2rem; color: #4b5563; line-height: 1.6;" id="cel-body">목표 점수를 달성하셨습니다!</p>
-            <button class="celebrate-btn" id="cel-btn" onclick="handleContinue()">계속 하기</button>
-        </div>
-    </div>
-    
     <script>
-        // 어휘 데이터를 저장할 통합 저장소
         let MASTER_DATA = { "4": [], "5": [], "6": [] };
-        
         let allWords = [];
         let deck = [];
         let score = 0;
@@ -276,14 +211,9 @@
         let direction = "vi2ko";
         let unitFilter = "all";
         let lastWordIdx = -1;
-
-        const MILESTONES = [100, 200, 300];
-        let nextMilestoneIdx = 0;
         
-        const overlay = document.getElementById("overlay");
-        const celTitle = document.getElementById("cel-title");
-        const celBody = document.getElementById("cel-body");
-        const celBtn = document.getElementById("cel-btn");
+        // 마일스톤 달성 체크용
+        let reachedMilestones = { 100: false, 200: false, 300: false };
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playTone(freq, type, dur, vol = 0.1) {
@@ -297,7 +227,6 @@
             osc.start(); osc.stop(audioCtx.currentTime + dur);
         }
 
-        // 외부 JSON 파일들을 비동기적으로 로드
         async function loadAllData() {
             try {
                 const [res4, res5, res6] = await Promise.all([
@@ -306,19 +235,9 @@
                     fetch('6과.json').then(r => r.json())
                 ]);
 
-                // 4과 데이터 매핑 (객체 배열 형식)
                 MASTER_DATA["4"] = res4.map(item => [item.korean, item.vietnamese, "4"]);
-                
-                // 5과 데이터 매핑 (단순 2차원 배열 형식 [Ko, Vi])
                 MASTER_DATA["5"] = res5.map(item => [item[0], item[1], "5"]);
-                
-                // 6과 데이터 매핑 (2차원 배열 형식 [Vi, Ko] 또는 [Ko, Vi] 확인 필요)
-                // 제공된 스니펫을 보면 6과는 [Vietnamese, Korean] 순서일 가능성이 큼
-                // 5과와 형식을 맞추기 위해 처리 (Ko, Vi 순으로 통일)
                 MASTER_DATA["6"] = res6.map(item => {
-                    // 보통 한국어가 포함된 쪽이 정답이므로 한글 여부로 판단하거나 
-                    // 파일 구조에 맞춰 순서를 조정해야 함. 여기서는 [Ko, Vi]로 가정.
-                    // 만약 6과 파일이 [Vi, Ko]라면 [item[1], item[0]]으로 수정 필요.
                     const containsKorean = (str) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(str);
                     if (containsKorean(item[1])) return [item[1], item[0], "6"];
                     return [item[0], item[1], "6"];
@@ -330,8 +249,8 @@
                 console.error("데이터 로드 실패:", err);
                 document.getElementById('loading-overlay').innerHTML = 
                     `<div style="color:red; padding:20px; text-align:center;">
-                        JSON 파일을 찾을 수 없습니다.<br>
-                        (words_4.json, 5과.json, 6과.json 파일이 필요합니다)
+                        JSON 파일을 로드하지 못했습니다.<br>
+                        파일 경로와 이름을 확인해 주세요.
                     </div>`;
             }
         }
@@ -355,33 +274,6 @@
             return arr;
         }
 
-        function showMilestone(milestone) {
-            playFanfareSound();
-            createConfetti();
-            overlay.classList.add("show");
-            
-            if (milestone === 300) {
-                celTitle.textContent = "🏆 전설의 등극! 300점! 🏆";
-                celTitle.style.color = "#f59e0b"; // Gold color
-                celBody.innerHTML = "와우! 300점을 달성하셨습니다.<br>당신은 진정한 단어 마스터입니다.";
-                celBtn.textContent = "처음부터 다시 하기";
-                celBtn.onclick = () => location.reload();
-            } else {
-                celTitle.textContent = `🎉 ${milestone}점 돌파! 🎉`;
-                celTitle.style.color = "#10b981";
-                celBody.textContent = `축하합니다! ${milestone}점에 도달하셨습니다.`;
-                celBtn.textContent = "계속 도전하기";
-                celBtn.onclick = handleContinue;
-            }
-        }
-
-        function handleContinue() {
-            overlay.classList.remove("show");
-            // 다음 문제로 바로 진행
-            questionCount++;
-            newQuestion();
-        }
-        
         function rebuildDeck() {
             deck = Array.from({ length: allWords.length }, (_, i) => i);
             shuffle(deck);
@@ -415,7 +307,6 @@
             document.getElementById("q-num").textContent = qCount;
 
             const others = allWords.filter((_, i) => i !== idx).map(w => direction === "vi2ko" ? w[0] : w[1]);
-            // 중복 제거 및 섞기
             const uniqueOthers = [...new Set(others)];
             shuffle(uniqueOthers);
             const choices = shuffle([answer, uniqueOthers[0], uniqueOthers[1], uniqueOthers[2]]);
@@ -431,22 +322,6 @@
             });
         }
 
-        function createConfetti() {
-            const container = document.getElementById("confetti-container");
-            container.innerHTML = "";
-            const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
-            
-            for (let i = 0; i < 80; i++) {
-                const span = document.createElement("span");
-                span.style.left = Math.random() * 100 + "%";
-                span.style.top = -10 + "px";
-                span.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                span.style.animationDelay = Math.random() * 2 + "s";
-                span.style.animationDuration = (2 + Math.random() * 2) + "s";
-                container.appendChild(span);
-            }
-        }
-        
         function check(selected, correct, btn) {
             const btns = document.querySelectorAll(".option-btn");
             btns.forEach(b => b.disabled = true);
@@ -458,16 +333,9 @@
                 streak++;
                 playTone(streak >= 2 ? 880 : 660, 'sine', 0.4);
                 document.getElementById("msg").innerHTML = `<span style="color:#16a34a">${streak > 1 ? streak+'콤보! ' : ''}+${gained}점!</span>`;
-                if (nextMilestoneIdx < MILESTONES.length && score >= MILESTONES[nextMilestoneIdx]) {
-                    const milestone = MILESTONES[nextMilestoneIdx];
-                    nextMilestoneIdx++; // 다음 목표로 인덱스 증가
-                    
-                    // 정답 확인 시간을 조금 준 뒤 축하 화면 표시
-                    setTimeout(() => {
-                        showMilestone(milestone);
-                    }, 500);
-                    return; // "다음 문제" 버튼 활성화 하지 않고 오버레이에서 처리
-                }
+                
+                // 마일스톤 체크
+                checkMilestone(score);
             } else {
                 btn.classList.add("wrong");
                 streak = 0;
@@ -477,6 +345,47 @@
 
             document.getElementById("score").textContent = score;
             document.getElementById("next-btn").disabled = false;
+        }
+
+        function checkMilestone(s) {
+            let m = 0;
+            if (s >= 300 && !reachedMilestones[300]) m = 300;
+            else if (s >= 200 && !reachedMilestones[200]) m = 200;
+            else if (s >= 100 && !reachedMilestones[100]) m = 100;
+
+            if (m > 0) {
+                reachedMilestones[m] = true;
+                showMilestone(m);
+            }
+        }
+
+        function showMilestone(m) {
+            const overlay = document.getElementById("milestone-overlay");
+            const title = document.getElementById("m-title");
+            const text = document.getElementById("m-text");
+            const emoji = document.getElementById("m-emoji");
+
+            if (m === 100) {
+                emoji.textContent = "⭐";
+                title.textContent = "100점 돌파!";
+                text.textContent = "기초가 탄탄하시네요! 계속해서 달려봅시다.";
+            } else if (m === 200) {
+                emoji.textContent = "🔥";
+                title.textContent = "200점 정복!";
+                text.textContent = "정말 대단한 집중력입니다! 이제 고지가 멀지 않았어요.";
+            } else if (m === 300) {
+                emoji.textContent = "👑";
+                title.textContent = "300점 마스터!";
+                text.textContent = "당신은 진정한 어휘 왕! 모든 단어를 완벽히 정복하셨군요.";
+            }
+
+            overlay.style.display = "flex";
+            playTone(1000, 'sine', 0.5);
+            setTimeout(() => playTone(1200, 'sine', 0.5), 100);
+        }
+
+        function closeMilestone() {
+            document.getElementById("milestone-overlay").style.display = "none";
         }
 
         document.getElementById("next-btn").onclick = () => {
@@ -493,15 +402,12 @@
 
         function reset() {
             score = 0; streak = 0; qCount = 1; lastWordIdx = -1;
+            reachedMilestones = { 100: false, 200: false, 300: false };
             document.getElementById("score").textContent = "0";
             initGame();
         }
 
-        // 페이지 로드 시 데이터 로드 시작
         window.onload = loadAllData;
     </script>
 </body>
 </html>
-
-
-
