@@ -293,6 +293,12 @@
             }
         }
 
+        function handleContinue() {
+            overlay.classList.remove("show");
+            // 다음 문제로 바로 진행
+            questionCount++;
+            newQuestion();
+        }
         
         function rebuildDeck() {
             deck = Array.from({ length: allWords.length }, (_, i) => i);
@@ -414,4 +420,5 @@
     </script>
 </body>
 </html>
+
 
