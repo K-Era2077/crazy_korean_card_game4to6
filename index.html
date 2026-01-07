@@ -132,6 +132,88 @@
             position: fixed; inset: 0; background: white; z-index: 200;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
+
+        #next-btn {
+            width: 100%; padding: 18px; font-size: 1.2rem;
+            background: #10b981; color: white; border: none; border-radius: 16px;
+            cursor: pointer; font-weight: 800;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #059669;
+            margin-top: 10px;
+        }
+        #next-btn:disabled { 
+            background: #d1d5db; 
+            color: #9ca3af;
+            cursor: not-allowed; 
+            box-shadow: none; 
+            transform: translateY(2px);
+        }
+        #next-btn:hover:not(:disabled) { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 0 #047857; }
+        #next-btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 0 0; }
+
+        /* Message Area */
+        #message {
+            text-align: center; 
+            min-height: 30px; 
+            font-weight: 700; 
+            margin: 10px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Celebration Overlay */
+        .overlay { 
+            position: fixed; inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            backdrop-filter: blur(5px);
+            display: none; 
+            align-items: center; justify-content: center; 
+            z-index: 100; 
+            padding: 20px;
+        }
+        .overlay.show { display: flex; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .celebrate-card { 
+            background: white; 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            text-align: center; 
+            max-width: 400px; 
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn { to { transform: scale(1); } }
+
+        .confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .confetti span {
+            position: absolute; width: 10px; height: 10px; 
+            animation: fall 3s linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        .celebrate-btn {
+            margin-top: 25px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            background: #4f46e5;
+            color: white;
+            width: 100%;
+            box-shadow: 0 4px 0 #3730a3;
+            transition: transform 0.1s;
+        }
+        .celebrate-btn:active { transform: translateY(4px); box-shadow: none; }
     </style>
 </head>
 <body>
@@ -420,5 +502,6 @@
     </script>
 </body>
 </html>
+
 
 
